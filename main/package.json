@@ -1,0 +1,20 @@
+{
+  "name": "golden-gate-atelier",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node server.mjs",
+    "test": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@phosphor-icons/core": "2.1.1",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.11",
+    "lighthouse": "12.8.2",
+    "playwright": "1.56.1"
+  }
+}

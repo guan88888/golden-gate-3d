@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#e8eee9">
+  <!-- FAVICON -->
+  <meta name="description" content="在交互式 3D 海湾中探索金门大桥。自由旋转视角，欣赏精细桥塔、悬索与海面，体验晴日、日落与夜景。">
+  <title>Golden Gate · 地标之间</title>
+  <style>/* STYLES */</style>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="#" title="返回全景" id="brand-home">
+      <span class="brand-mark">{{icon:bridge}}</span>
+      <span>地标之间<span class="brand-en">LANDMARK ATELIER</span></span>
+    </a>
+    <nav aria-label="主导航">
+      <button class="nav-link active" id="explore-link">探索地标</button>
+      <button class="nav-link" data-dialog="about">建筑档案</button>
+      <button class="nav-link" data-dialog="help">操作指南</button>
+    </nav>
+    <button class="save-button" id="save-image" aria-label="保存画面">{{icon:camera}}<span>保存画面</span></button>
+  </header>
+
+  <main>
+    <section class="experience" aria-label="金门大桥交互式 3D 模型">
+      <div id="scene" role="img" aria-label="金门大桥三维海湾场景。拖动旋转，滚轮缩放，也可使用下方视角和缩放按钮。" tabindex="0"></div>
+      <div class="scene-vignette" aria-hidden="true"></div>
+      <div class="intro">
+        <p class="eyebrow">SAN FRANCISCO, CALIFORNIA</p>
+        <h1>Golden Gate<span class="title-period">.</span></h1>
+        <p class="intro-description">一抹国际橙，跨越山海之间。</p>
+        <span class="intro-caption">金门大桥 <span> / </span> 美国 · 旧金山</span>
+      </div>
+
+      <aside class="environment" aria-label="场景光照设置">
+        <p class="panel-label">此刻的海湾 <span>LIGHT & ATMOSPHERE</span></p>
+        <div class="light-options" role="group" aria-label="光照模式">
+          <button data-light="day" aria-pressed="false">{{icon:sun}}<span>晴日</span></button>
+          <button data-light="sunset" class="selected" aria-pressed="true">{{icon:sun-horizon}}<span>日落</span></button>
+          <button data-light="night" aria-pressed="false">{{icon:moon-stars}}<span>夜景</span></button>
+        </div>
+        <label class="fog-control" for="fog-range"><span>{{icon:cloud-fog}} 海雾</span><output id="fog-value" for="fog-range">20%</output></label>
+        <input id="fog-range" type="range" min="0" max="100" value="20" aria-label="海雾浓度">
+      </aside>
+
+      <div class="loading" id="loading" role="status">
+        <div class="loading-bridge">{{icon:bridge}}</div>
+        <p>正在构筑海湾</p>
+        <span>让每一根悬索，都恰到好处。</span>
+        <div class="loading-track"><span></span></div>
+      </div>
+      <div class="render-error" id="render-error" hidden role="alert">
+        {{icon:bridge}}<h2>海湾暂时无法呈现</h2>
+        <p id="error-message">请在支持 WebGL 2 的浏览器中打开此页面。</p>
+        <button id="retry-button">重新加载</button>
+      </div>
+
+      <div class="scene-bottom">
+        <div class="scene-location"><span class="location-symbol">{{icon:map-pin}}</span><span>金门海峡<small>37°49′ N &nbsp; 122°28′ W</small></span></div>
+        <p class="gesture-hint">{{icon:hand-grabbing}}<span>拖动旋转<span class="hint-divider"> / </span>滚轮缩放</span></p>
+        <div class="compass" aria-label="方位指示"><span>N</span><div id="compass-needle">{{icon:navigation-arrow}}</div></div>
+      </div>
+
+      <div class="scene-toolbar" aria-label="模型工具">
+        <button id="auto-rotate" aria-label="开启自动环绕" aria-pressed="false" data-tooltip="自动环绕">{{icon:arrows-clockwise}}</button>
+        <span class="tool-separator"></span>
+        <button id="zoom-in" aria-label="放大" data-tooltip="放大">{{icon:plus}}</button>
+        <button id="zoom-out" aria-label="缩小" data-tooltip="缩小">{{icon:minus}}</button>
+        <span class="tool-separator"></span>
+        <button id="reset-view" aria-label="重置视角" data-tooltip="重置视角">{{icon:arrow-counter-clockwise}}</button>
+        <button id="fullscreen" aria-label="进入全屏" aria-pressed="false" data-tooltip="全屏">{{icon:corners-out}}</button>
+      </div>
+    </section>
+
+    <footer class="bottom-bar">
+      <div class="bridge-summary"><span class="summary-icon">{{icon:bridge}}</span><div><strong>一座桥，一座城的精神。</strong><p>自 1937 年，连接每一种向往。</p></div></div>
+      <div class="facts" aria-label="金门大桥建筑数据">
+        <div><span>主跨长度</span><strong>1,280<small>m</small></strong></div>
+        <div><span>桥塔高度</span><strong>227<small>m</small></strong></div>
+        <div><span>通车年份</span><strong>1937</strong></div>
+      </div>
+      <div class="view-switcher"><span class="view-label">选择视角</span><div class="view-options" role="group" aria-label="观景视角">
+        <button data-view="classic" class="selected" aria-pressed="true">经典全景</button>
+        <button data-view="tower" aria-pressed="false">桥塔细节</button>
+        <button data-view="aerial" aria-pressed="false">海湾俯瞰</button>
+      </div></div>
+    </footer>
+  </main>
+
+  <dialog id="about-dialog" aria-labelledby="about-title">
+    <button class="dialog-close" aria-label="关闭建筑档案">{{icon:x}}</button>
+    <span class="dialog-bridge">{{icon:bridge}}</span>
+    <p class="dialog-eyebrow">THE GOLDEN GATE BRIDGE</p>
+    <h2 id="about-title">海峡之上，国际橙。</h2>
+    <p>金门大桥横跨金门海峡，连接旧金山与马林县。1937 年落成时，它拥有世界上最长的悬索桥主跨。</p>
+    <p>建筑师欧文·莫罗为桥塔赋予装饰艺术风格，并选用「国际橙」作为桥身颜色。这种温暖的色彩，让大桥在海雾与群山之间清晰可见。</p>
+    <dl class="archive-data"><div><dt>结构</dt><dd>双塔悬索桥</dd></div><div><dt>主跨</dt><dd>1,280 米</dd></div><div><dt>塔高</dt><dd>227 米</dd></div><div><dt>开放</dt><dd>1937 年 5 月</dd></div></dl>
+    <p class="model-note">本场景为程序化制作的艺术模型，着重表现桥梁结构与海湾氛围；局部比例及地形经过艺术化处理。</p>
+    <a class="source-link" href="https://www.goldengate.org/bridge/history-research/" target="_blank" rel="noopener noreferrer">了解金门大桥的历史 {{icon:arrow-up-right}}</a>
+  </dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <button class="dialog-close" aria-label="关闭操作指南">{{icon:x}}</button>
+    <p class="dialog-eyebrow">MAKE IT YOUR VIEW</p><h2 id="help-title">换个角度，看见更多。</h2>
+    <div class="help-row">{{icon:hand-grabbing}}<div><strong>自由观察</strong><p>按住鼠标左键拖动，或单指滑动，旋转模型。</p></div></div>
+    <div class="help-row">{{icon:magnifying-glass-plus}}<div><strong>靠近细节</strong><p>滚动滚轮、双指捏合，或点击右侧 + / − 缩放。</p></div></div>
+    <div class="help-row">{{icon:arrows-out-cardinal}}<div><strong>平移视角</strong><p>按住鼠标右键拖动，或在屏幕上双指滑动。</p></div></div>
+    <div class="help-row">{{icon:keyboard}}<div><strong>键盘操作</strong><p>选中场景后，方向键旋转，+ / − 缩放，R 重置。Esc 关闭弹窗。</p></div></div>
+    <p class="model-note">「保存画面」会导出当前视角的高清 PNG。开启「自动环绕」，即可静静欣赏海湾。</p>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">请启用 JavaScript，以欣赏金门大桥 3D 模型。</div></noscript>
+  <script>/* APPLICATION */</script>
+</body>
+</html>
